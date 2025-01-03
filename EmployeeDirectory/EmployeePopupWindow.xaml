@@ -1,0 +1,42 @@
+﻿<Window x:Class="EmployeeDirectory.EmployeePopupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Title}" Height="400" Width="350"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="{Binding HeaderText}" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center" />
+
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <TextBlock>
+                    <Run Text="Name" />
+                    <Run Text="*" Foreground="Red"/>
+                </TextBlock>
+                <TextBox x:Name="NameTextBox" Margin="0,5" Text="{Binding Employee.Name}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <TextBlock>
+            <Run Text="Email" />
+            <Run Text="*" Foreground="Red"/>
+                </TextBlock>
+                <TextBox x:Name="EmailTextBox" Margin="0,5" Text="{Binding Employee.Email}" />
+            </StackPanel>
+            
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <TextBlock Text="Position" />
+                <TextBox x:Name="PositionTextBox" Margin="0,5" Text="{Binding Employee.Position}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="0,5">
+                <TextBlock Text="Department" />
+                <TextBox x:Name="DepartmentTextBox" Margin="0,5" Text="{Binding Employee.Department}" />
+            </StackPanel>
+        
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                <Button Content="{Binding SaveButtonText}" Width="100" Click="OnSaveClick" Margin="0,0,5,0" />
+                <Button Content="Cancel" Width="100" Click="OnCancelClick" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -7,6 +7,8 @@ public class EmployeeViewModel : INotifyPropertyChanged
 {
     public ObservableCollection<Employee> Employees { get; set; }
 
+    private static int _lastUsedId = 0;
+
     private Employee? _selectedEmployee;
 
     public Employee? SelectedEmployee
@@ -22,6 +24,20 @@ public class EmployeeViewModel : INotifyPropertyChanged
         }
     }
 
+    //private bool _isPopupOpen;
+    //public bool IsPopupOpen
+    //{
+    //    get => _isPopupOpen;
+    //    set
+    //    {
+    //        if (_isPopupOpen != value)
+    //        {
+    //            _isPopupOpen = value;
+    //            OnPropertyChanged(nameof(IsPopupOpen));
+    //        }
+    //    }
+    //}
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     protected virtual void OnPropertyChanged(string propertyName)
@@ -36,7 +52,7 @@ public class EmployeeViewModel : INotifyPropertyChanged
 
     public void AddEmployee(Employee employee)
     {
-        employee.Id = Employees.Count + 1;
+        employee.Id = ++_lastUsedId;
         Employees.Add(employee);
     }
 

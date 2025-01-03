@@ -6,18 +6,16 @@
         xmlns:local="clr-namespace:EmployeeDirectory"
         mc:Ignorable="d"
         Title="Employee Directory" Height="450" Width="800">
-    
-    <Window.Resources>
-        <local:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
-    </Window.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <DataGrid x:Name="DataGrid" Grid.Column="0" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}" AutoGenerateColumns="False" Margin="10" IsReadOnly="True">
+        <Button Content="Add Employee" Click="OnAddEmployeeClick" Margin="10" HorizontalAlignment="Right" Width="120" />
+
+        <!--<DataGrid x:Name="DataGrid" Grid.Row="1" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}" AutoGenerateColumns="False" Margin="10" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
@@ -25,37 +23,68 @@
                 <DataGridTextColumn Header="Department" Binding="{Binding Department}" />
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
             </DataGrid.Columns>
+        </DataGrid>-->
+
+        <DataGrid x:Name="DataGrid" Grid.Row="1" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}" AutoGenerateColumns="False" Margin="10" IsReadOnly="True">
+            <DataGrid.Columns>
+                <!-- Sr. No. Column -->
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Position" Binding="{Binding Position}" />
+                <DataGridTextColumn Header="Department" Binding="{Binding Department}" />
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+
+                <DataGridTemplateColumn Header="Edit">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Edit" Click="OnEditClick" Width="75" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Delete">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Delete" Click="OnDeleteEmployeeClick" Width="75" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Column="1" Margin="10">
-            <TextBlock Text="Employee Details" FontWeight="Bold" Margin="0,0,0,10" />
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Content="Name:" Width="80" VerticalAlignment="Center" />
-                <TextBox x:Name="NameTextBox" Text="{Binding SelectedEmployee.Name, Mode=OneWay}" Width="200" />
-            </StackPanel>
+        <!--<Popup x:Name="Popup" StaysOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="300" IsOpen="{Binding IsPopupOpen}">
+            <Border Background="White" BorderBrush="Black" BorderThickness="1" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Add Employee" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center" />
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Content="Position:" Width="80" VerticalAlignment="Center" />
-                <TextBox x:Name="PositionTextBox" Text="{Binding SelectedEmployee.Position, Mode=OneWay}" Width="200" />
-            </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,5">
+                        <TextBlock Text="Name" />
+                        <TextBox x:Name="NameTextBox" Margin="0,5"/>
+                    </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Content="Department:" Width="80" VerticalAlignment="Center" />
-                <TextBox x:Name="DepartmentTextBox" Text="{Binding SelectedEmployee.Department, Mode=OneWay}" Width="200" />
-            </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,5">
+                        <TextBlock Text="Position" />
+                        <TextBox x:Name="PositionTextBox" Margin="0,5" />
+                    </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <Label Content="Email:" Width="80" VerticalAlignment="Center" />
-                <TextBox x:Name="EmailTextBox" Text="{Binding SelectedEmployee.Email, Mode=OneWay}" Width="200" />
-            </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,5">
+                        <TextBlock Text="Department" />
+                        <TextBox x:Name="DepartmentTextBox" Margin="0,5" />
+                    </StackPanel>
 
-            <Button Content="Add Employee" Click="OnAddEmployeeClick" Margin="0,0,0,5"  Visibility="{Binding SelectedEmployee, Converter={StaticResource NullToBooleanConverter}, ConverterParameter='True'}" />
+                    <StackPanel Orientation="Vertical" Margin="0,5">
+                        <TextBlock Text="Email" />
+                        <TextBox x:Name="EmailTextBox" Margin="0,5" />
+                    </StackPanel>
 
-            <Button Content="Update Employee" Click="OnUpdateEmployeeClick" Margin="0,0,0,5" Visibility="{Binding SelectedEmployee, Converter={StaticResource NullToBooleanConverter}, ConverterParameter='False'}"/>
-            <Button Content="Delete Employee" Click="OnDeleteEmployeeClick" Margin="0,0,0,5" Visibility="{Binding SelectedEmployee, Converter={StaticResource NullToBooleanConverter}, ConverterParameter='False'}"/>
-
-            <Button Content="Deselect Employee" Click="OnDeselectEmployeeClick" Margin="0,0,0,5" Visibility="{Binding SelectedEmployee, Converter={StaticResource NullToBooleanConverter}, ConverterParameter='False'}" />
-        </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                        <Button Content="Save" Width="100" Click="OnSaveEmployeeClick" Margin="0,0,5,0" />
+                        <Button Content="Cancel" Width="100" Click="OnCancelPopupClick" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Popup>-->
+   
     </Grid>
 </Window>
