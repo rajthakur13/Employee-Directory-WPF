@@ -16,7 +16,7 @@ namespace EmployeeDirectory
 
             Title = isEditMode ? "Edit Employee" : "Add Employee";
             HeaderText = isEditMode ? "Edit Employee Details" : "Add New Employee";
-            SaveButtonText = isEditMode ? "Update" : "Save";
+            SaveButtonText = isEditMode ? "Update" : "Add";
 
             Employee = employee != null
                 ? new Employee
