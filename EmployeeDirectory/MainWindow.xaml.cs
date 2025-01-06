@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace EmployeeDirectory
 {
@@ -68,5 +69,11 @@ namespace EmployeeDirectory
             }
         }
 
+        //PreviewMouseDoubleClick="DataGrid_PreviewMouseDoubleClick"
+        //private void DataGrid_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    var viewModel = (EmployeeViewModel)DataContext;
+        //    viewModel.ClearSelectedEmployee();
+        //}
     }
 }

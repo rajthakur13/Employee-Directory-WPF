@@ -72,4 +72,11 @@ public class EmployeeViewModel : INotifyPropertyChanged
     {
         Employees.Remove(employee);
     }
+
+    //public void ClearSelectedEmployee()
+    //{
+    //    SelectedEmployee = null;
+    //    OnPropertyChanged(nameof(SelectedEmployee));
+    //}
+
 }
