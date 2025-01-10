@@ -1,19 +1,20 @@
-﻿    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.ComponentModel;
-
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace EmployeeDirectory.Models
-    {
+{
     public class Employee : INotifyPropertyChanged
     {
+        public int Id { get; set; }
+
         private string _name;
         public string Name
         {
-            get => _name;
+            get { return _name; }
             set
             {
                 if (_name != value)
@@ -24,10 +25,24 @@ namespace EmployeeDirectory.Models
             }
         }
 
+        private string _email;
+        public string Email
+        {
+            get { return _email; }
+            set
+            {
+                if (_email != value)
+                {
+                    _email = value;
+                    OnPropertyChanged(nameof(Email));
+                }
+            }
+        }
+
         private string _position;
         public string Position
         {
-            get => _position;
+            get { return _position; }
             set
             {
                 if (_position != value)
@@ -41,7 +56,7 @@ namespace EmployeeDirectory.Models
         private string _department;
         public string Department
         {
-            get => _department;
+            get { return _department; }
             set
             {
                 if (_department != value)
@@ -52,25 +67,9 @@ namespace EmployeeDirectory.Models
             }
         }
 
-        private string _email;
-        public string Email
-        {
-            get => _email;
-            set
-            {
-                if (_email != value)
-                {
-                    _email = value;
-                    OnPropertyChanged(nameof(Email));
-                }
-            }
-        }
-
-        public int Id { get; set; }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
