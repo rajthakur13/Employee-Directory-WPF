@@ -1,0 +1,58 @@
+﻿<views:MvxWindow
+    x:TypeArguments="viewModels:AddEmployeeViewModel"
+    xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+    xmlns:viewModels="clr-namespace:EmployeeDirectory.Core.ViewModels;assembly=EmployeeDirectory.Core"
+    x:Class="EmployeeDirectory.WPF.Views.AddEmployeePopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d" 
+    d:DesignHeight="300" d:DesignWidth="400">
+
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="Add New Employee" FontWeight="Bold" Margin="0,0,0,10" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Name:" Width="80" VerticalAlignment="Center" />
+                <TextBox Text="{Binding NewEmployeeName}" Width="200" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Email:" Width="80" VerticalAlignment="Center" />
+                <TextBox Text="{Binding NewEmployeeEmail}" Width="200" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Position:" Width="80" VerticalAlignment="Center" />
+                <TextBox Text="{Binding NewEmployeePosition}" Width="200" />
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Content="Department:" Width="80" VerticalAlignment="Center" />
+                <TextBox Text="{Binding NewEmployeeDepartment}" Width="200" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <Button Content="Submit" Command="{Binding SubmitEmployeeCommand}" Margin="5" Padding="5"/>
+                <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="5" Padding="5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</views:MvxWindow>
+
+
+
+<!--<UserControl x:Class="EmployeeDirectory.WPF.Views.AddEmployeePopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EmployeeDirectory.WPF.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+            
+    </Grid>
+</UserControl>-->
