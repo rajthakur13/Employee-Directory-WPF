@@ -12,5 +12,7 @@ namespace EmployeeDirectory.Core.Services
     {
         Task<List<Employee>> GetAllEmployees();
         Task<int> AddEmployee(Employee employee);
+        Task<bool> DeleteEmployee(int employeeId);
+        Task<bool> UpdateEmployee(Employee updateEmployee);
     }
 }

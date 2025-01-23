@@ -16,6 +16,7 @@ namespace EmployeeDirectory.Core.ViewModels
         private readonly IEmployeeService employeeService;
         private readonly IMvxNavigationService navigationService;
         private EmployeeViewModel employeeViewModel;
+        private Employee editingEmployee;
 
         public AddEmployeeViewModel(IEmployeeService employeeService, IMvxNavigationService navigationService)
         {
@@ -26,6 +27,14 @@ namespace EmployeeDirectory.Core.ViewModels
         public override void Prepare(EmployeeViewModel parameter)
         {
             employeeViewModel = parameter;
+        }
+        public void PrepareForEdit(Employee employee)
+        {
+            editingEmployee = employee;
+            NewEmployeeName = employee.Name;
+            NewEmployeeEmail = employee.Email;
+            NewEmployeePosition = employee.Position;
+            NewEmployeeDepartment = employee.Department;
         }
 
         private string _newEmployeeName;
@@ -99,24 +108,49 @@ namespace EmployeeDirectory.Core.ViewModels
                 return;
             }
 
-            var newEmployee = new Employee
+            if (editingEmployee != null)
             {
-                Name = NewEmployeeName,
-                Email = NewEmployeeEmail,
-                Position = NewEmployeePosition,
-                Department = NewEmployeeDepartment
-            };
+                editingEmployee.Name = NewEmployeeName;
+                editingEmployee.Email = NewEmployeeEmail;
+                editingEmployee.Position = NewEmployeePosition;
+                editingEmployee.Department = NewEmployeeDepartment;
 
-            var addedEmployeeId = await employeeService.AddEmployee(newEmployee);
-
-            if (addedEmployeeId > 0)
-            {
-                await navigationService.Close(this);
-                employeeViewModel.Employees.Add(newEmployee);
+                var success = await employeeService.UpdateEmployee(editingEmployee);
+                if (success)
+                {
+                    //var index = employeeViewModel.Employees.IndexOf(editingEmployee);
+                    //if (index >= 0)
+                    //{
+                    //    employeeViewModel.Employees[index] = editingEmployee;
+                    //}
+                    await navigationService.Close(this);
+                }
+                else
+                {
+                    Console.WriteLine("Error Occured");
+                }
             }
             else
             {
-                Console.WriteLine("Error Occured!");
+                var newEmployee = new Employee
+                {
+                    Name = NewEmployeeName,
+                    Email = NewEmployeeEmail,
+                    Position = NewEmployeePosition,
+                    Department = NewEmployeeDepartment
+                };
+
+                var addedEmployeeId = await employeeService.AddEmployee(newEmployee);
+
+                if (addedEmployeeId > 0)
+                {
+                    await navigationService.Close(this);
+                    employeeViewModel.Employees.Add(newEmployee);
+                }
+                else
+                {
+                    Console.WriteLine("Error Occured!");
+                }
             }
         }
 

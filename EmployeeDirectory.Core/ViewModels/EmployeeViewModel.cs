@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MvvmCross.Navigation;
+using MvvmCross;
 
 namespace EmployeeDirectory.Core.ViewModels
 {
@@ -39,39 +40,17 @@ namespace EmployeeDirectory.Core.ViewModels
                 RaisePropertyChanged(() => Employees);
             }
         }
+        private Employee _selectedEmployee;
+        public Employee SelectedEmployee
+        {
+            get => _selectedEmployee;
+            set
+            {
+                _selectedEmployee = value;
+                RaisePropertyChanged(() => SelectedEmployee);
+            }
+        }
 
-        //private string _newEmployeeName;
-        //public string NewEmployeeName
-        //{
-        //    get => _newEmployeeName;
-        //    set
-        //    {
-        //        _newEmployeeName = value;
-        //        RaisePropertyChanged(() => NewEmployeeName);
-        //    }
-        //}
-
-        //private string _newEmployeeEmail;
-        //public string NewEmployeeEmail
-        //{
-        //    get => _newEmployeeEmail;
-        //    set
-        //    {
-        //        _newEmployeeEmail = value;
-        //        RaisePropertyChanged(() => NewEmployeeEmail);
-        //    }
-        //}
-
-        //private string _newEmployeeDepartment;
-        //public string NewEmployeeDepartment
-        //{
-        //    get => _newEmployeeDepartment;
-        //    set
-        //    {
-        //        _newEmployeeDepartment = value;
-        //        RaisePropertyChanged(() => NewEmployeeDepartment);
-        //    }
-        //}
 
         public IMvxCommand LoadEmployeesCommand => new MvxCommand(async () => await LoadEmployees());
         public async Task LoadEmployees()
@@ -86,38 +65,32 @@ namespace EmployeeDirectory.Core.ViewModels
         {
             await _navigationService.Navigate<AddEmployeeViewModel, EmployeeViewModel>(this);
         }
-        //public IMvxCommand AddEmployeeCommand => new MvxCommand(async () => await AddEmployee());
 
-        //private async Task AddEmployee()
-        //{
-        //    if (string.IsNullOrWhiteSpace(NewEmployeeName) ||
-        //        string.IsNullOrWhiteSpace(NewEmployeeEmail) ||
-        //        string.IsNullOrWhiteSpace(NewEmployeeDepartment))
-        //    {
-        //        Console.Write("Error Occured");
-        //        return;
-        //    }
+        public IMvxCommand DeleteEmployeeCommand => new MvxCommand(async () => await DeleteEmployee());
+        private async Task DeleteEmployee()
+        {
+            if(SelectedEmployee != null)
+            {
+                var success = await _employeeService.DeleteEmployee(SelectedEmployee.Id);
+                if (success)
+                {
+                    Employees.Remove(SelectedEmployee);
+                    SelectedEmployee = null;
+                }
+                else
+                {
+                    Console.WriteLine("Error Occured!");
+                }
+            }
+        }
 
-        //    var newEmployee = new Employee
-        //    {
-        //        Name = NewEmployeeName,
-        //        Email = NewEmployeeEmail,
-        //        Department = NewEmployeeDepartment
-        //    };
+        public IMvxCommand<Employee> EditEmployeeCommand => new MvxCommand<Employee>(async employee => await EditEmployee(SelectedEmployee));
 
-        //    var addedEmployeeId = await _employeeService.AddEmployee(newEmployee);
-
-        //    if (addedEmployeeId > 0)
-        //    {
-        //        await LoadEmployees();
-        //        NewEmployeeName = string.Empty;
-        //        NewEmployeeEmail = string.Empty;
-        //        NewEmployeeDepartment = string.Empty;
-        //    }
-        //    else
-        //    {
-        //        Console.Write("Error Occured");
-        //    }
-        //}
+        private async Task EditEmployee(Employee employee)
+        {
+            var addEmployeeViewModel = Mvx.IoCProvider.Resolve<AddEmployeeViewModel>();
+            addEmployeeViewModel.PrepareForEdit(employee);
+            await _navigationService.Navigate(addEmployeeViewModel);
+        }
     }
 }
