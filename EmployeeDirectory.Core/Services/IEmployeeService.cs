@@ -10,9 +10,9 @@ namespace EmployeeDirectory.Core.Services
 {
     public interface IEmployeeService
     {
-        Task<List<Employee>> GetAllEmployees();
-        Task<int> AddEmployee(Employee employee);
-        Task<bool> DeleteEmployee(int employeeId);
-        Task<bool> UpdateEmployee(Employee updateEmployee);
+        Task<List<Employee>> GetAllEmployeesAsync();
+        Task<int> AddEmployeeAsync(Employee employee);
+        Task<bool> DeleteEmployeeAsync(int employeeId);
+        Task<bool> UpdateEmployeeAsync(Employee updateEmployee);
     }
 }

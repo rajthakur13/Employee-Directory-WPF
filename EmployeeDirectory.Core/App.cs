@@ -1,19 +1,31 @@
 ﻿using EmployeeDirectory.Core.Services;
-using MvvmCross.ViewModels;
-using MvvmCross;
 using EmployeeDirectory.Core.ViewModels;
-using MvvmCross.IoC;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace EmployeeDirectory.Core
 {
-    public class App : MvxApplication
+    public class App
     {
-        public override void Initialize()
+        private static IServiceProvider _serviceProvider;
+
+        public static void Initialize()
         {
-            //Mvx.IoCProvider.RegisterType<IEmployeeService, EmployeeService>();
-            Mvx.IoCProvider.RegisterSingleton<IEmployeeService>(new EmployeeService());
-            Mvx.IoCProvider.RegisterType<AddEmployeeViewModel>();
-            RegisterAppStart<EmployeeViewModel>();
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+
+            _serviceProvider = serviceCollection.BuildServiceProvider();
+
+            var initialViewModel = _serviceProvider.GetRequiredService<EmployeeViewModel>();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IEmployeeService, EmployeeService>();
+
+            services.AddTransient<EmployeeViewModel>();
+            services.AddTransient<AddEmployeeViewModel>();
+
         }
     }
 }

@@ -1,77 +1,63 @@
 ﻿using EmployeeDirectory.Core.Services;
 using EmployeeDirectory.Core.Models;
-using MvvmCross.Commands;
-using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MvvmCross.Navigation;
-using MvvmCross;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace EmployeeDirectory.Core.ViewModels
 {
-    public class EmployeeViewModel : MvxViewModel
+    public class EmployeeViewModel : ObservableObject
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IMvxNavigationService _navigationService;
+        private readonly INavigationService _navigationService;
 
-        public EmployeeViewModel(IEmployeeService employeeService, IMvxNavigationService navigationService)
+        public EmployeeViewModel(IEmployeeService employeeService, INavigationService navigationService)
         {
             _employeeService = employeeService;
             _navigationService = navigationService;
-        }
-
-        public override async Task Initialize()
-        {
-            await base.Initialize();
-            await LoadEmployees();
+            LoadEmployeesCommand.ExecuteAsync(null);
         }
 
         private ObservableCollection<Employee> _employees;
         public ObservableCollection<Employee> Employees
         {
             get => _employees;
-            set
-            {
-                _employees = value;
-                RaisePropertyChanged(() => Employees);
-            }
+            set => SetProperty(ref _employees, value);
         }
         private Employee _selectedEmployee;
         public Employee SelectedEmployee
         {
             get => _selectedEmployee;
-            set
-            {
-                _selectedEmployee = value;
-                RaisePropertyChanged(() => SelectedEmployee);
-            }
+            set => SetProperty(ref _selectedEmployee, value);
         }
 
 
-        public IMvxCommand LoadEmployeesCommand => new MvxCommand(async () => await LoadEmployees());
+        public IAsyncRelayCommand LoadEmployeesCommand => new AsyncRelayCommand(LoadEmployees);
         public async Task LoadEmployees()
         {
-            var employeeList = await _employeeService.GetAllEmployees();
+            var employeeList = await _employeeService.GetAllEmployeesAsync();
             Employees = new ObservableCollection<Employee>(employeeList);
         }
 
-        public IMvxCommand OpenAddEmployeePopupCommand => new MvxCommand(async () => await OpenAddEmployeePopup());
+        public IAsyncRelayCommand OpenAddEmployeePopupCommand => new AsyncRelayCommand(OpenAddEmployeePopup);
 
         private async Task OpenAddEmployeePopup()
         {
-            await _navigationService.Navigate<AddEmployeeViewModel, EmployeeViewModel>(this);
+            await _navigationService.NavigateToAsync<AddEmployeeViewModel>(this);
         }
 
-        public IMvxCommand DeleteEmployeeCommand => new MvxCommand(async () => await DeleteEmployee());
+        public IAsyncRelayCommand DeleteEmployeeCommand => new AsyncRelayCommand(DeleteEmployee);
         private async Task DeleteEmployee()
         {
             if(SelectedEmployee != null)
             {
-                var success = await _employeeService.DeleteEmployee(SelectedEmployee.Id);
+                var success = await _employeeService.DeleteEmployeeAsync(SelectedEmployee.Id);
                 if (success)
                 {
                     Employees.Remove(SelectedEmployee);
@@ -84,13 +70,13 @@ namespace EmployeeDirectory.Core.ViewModels
             }
         }
 
-        public IMvxCommand<Employee> EditEmployeeCommand => new MvxCommand<Employee>(async employee => await EditEmployee(SelectedEmployee));
+        public IAsyncRelayCommand<Employee> EditEmployeeCommand => new AsyncRelayCommand<Employee>(async employee => await EditEmployee(SelectedEmployee));
 
         private async Task EditEmployee(Employee employee)
         {
-            var addEmployeeViewModel = Mvx.IoCProvider.Resolve<AddEmployeeViewModel>();
+            var addEmployeeViewModel = Ioc.Default.GetService<AddEmployeeViewModel>();
             addEmployeeViewModel.PrepareForEdit(employee);
-            await _navigationService.Navigate(addEmployeeViewModel);
+            await _navigationService.NavigateToAsync<AddEmployeeViewModel>(employee);
         }
     }
 }

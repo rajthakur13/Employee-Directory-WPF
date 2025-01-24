@@ -9,41 +9,34 @@ namespace EmployeeDirectory.Core.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly List<Employee> _employees = new();
+        private readonly Dictionary<int, Employee> _employees = new();
 
-        public Task<List<Employee>> GetAllEmployees()
+        public Task<List<Employee>> GetAllEmployeesAsync()
         {
-            return Task.FromResult(_employees);
+            return Task.FromResult(_employees.Values.ToList());
         }
 
-        public Task<int> AddEmployee(Employee employee)
+        public Task<int> AddEmployeeAsync(Employee employee)
         {
-            employee.Id = _employees.Any() ? _employees.Max(e => e.Id) + 1 : 1;
-            _employees.Add(employee);
+            employee.Id = _employees.Count > 0 ? _employees.Keys.Max() + 1 : 1;
+            _employees[employee.Id] = employee;
             return Task.FromResult(employee.Id);
         }
 
-        public Task<bool> DeleteEmployee(int employeeId) 
+        public Task<bool> DeleteEmployeeAsync(int employeeId) 
         {
-            var employeeToRemove = _employees.FirstOrDefault(e => e.Id == employeeId);
-            if (employeeToRemove != null)
+            if(_employees.Remove(employeeId))
             {
-                _employees.Remove(employeeToRemove);
                 return Task.FromResult(true);
             }
             return Task.FromResult(false);
         }
 
-        public Task<bool> UpdateEmployee(Employee updateEmployee)
+        public Task<bool> UpdateEmployeeAsync(Employee updateEmployee)
         {
-            var existingEmployee = _employees.FirstOrDefault(e => e.Id == updateEmployee.Id);
-            if (existingEmployee != null)
+            if (_employees.ContainsKey(updateEmployee.Id))
             {
-                existingEmployee.Name = updateEmployee.Name;
-                existingEmployee.Email = updateEmployee.Email;
-                existingEmployee.Position = updateEmployee.Position;
-                existingEmployee.Department = updateEmployee.Department;
-
+                _employees[updateEmployee.Id] = updateEmployee;
                 return Task.FromResult(true);
             }
             return Task.FromResult(false);

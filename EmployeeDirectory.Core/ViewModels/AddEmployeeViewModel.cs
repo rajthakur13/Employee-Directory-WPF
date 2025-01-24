@@ -1,8 +1,7 @@
-﻿using EmployeeDirectory.Core.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using EmployeeDirectory.Core.Models;
 using EmployeeDirectory.Core.Services;
-using MvvmCross.Commands;
-using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,23 +10,24 @@ using System.Threading.Tasks;
 
 namespace EmployeeDirectory.Core.ViewModels
 {
-    public class AddEmployeeViewModel : MvxViewModel<EmployeeViewModel>
+    public class AddEmployeeViewModel : ObservableObject
     {
         private readonly IEmployeeService employeeService;
-        private readonly IMvxNavigationService navigationService;
+        private readonly INavigationService _navigationService;
         private EmployeeViewModel employeeViewModel;
         private Employee editingEmployee;
 
-        public AddEmployeeViewModel(IEmployeeService employeeService, IMvxNavigationService navigationService)
+        public AddEmployeeViewModel(IEmployeeService employeeService, INavigationService navigationService)
         {
             this.employeeService = employeeService;
-            this.navigationService = navigationService;
+            this._navigationService = navigationService;
         }
 
-        public override void Prepare(EmployeeViewModel parameter)
+        public void Prepare(EmployeeViewModel parameter)
         {
             employeeViewModel = parameter;
         }
+
         public void PrepareForEdit(Employee employee)
         {
             editingEmployee = employee;
@@ -40,30 +40,14 @@ namespace EmployeeDirectory.Core.ViewModels
         private string _newEmployeeName;
         public string NewEmployeeName
         {
-            get
-            {
-                return _newEmployeeName;
-            }
-            //set
-            //{
-            //    _newEmployeeName = value;
-            //    RaisePropertyChanged(() => NewEmployeeName);
-            //}
+            get => _newEmployeeName;
             set => SetProperty(ref _newEmployeeName, value);
         }
 
         private string _newEmployeeEmail;
         public string NewEmployeeEmail
         {
-            get
-            {
-                return _newEmployeeEmail;
-            }
-            //set
-            //{
-            //    _newEmployeeEmail = value;
-            //    RaisePropertyChanged(() => NewEmployeeEmail);
-            //}
+            get => _newEmployeeEmail;
             set => SetProperty(ref _newEmployeeEmail, value);
 
         }
@@ -71,10 +55,7 @@ namespace EmployeeDirectory.Core.ViewModels
         private string _newEmployeePosition;
         public string NewEmployeePosition
         {
-            get
-            {
-                return _newEmployeePosition;
-            }
+            get => _newEmployeePosition;
             set => SetProperty(ref _newEmployeePosition, value);
 
         }
@@ -82,20 +63,11 @@ namespace EmployeeDirectory.Core.ViewModels
         private string _newEmployeeDepartment;
         public string  NewEmployeeDepartment
         {
-            get
-            {
-                return _newEmployeeDepartment;
-            }
-            //set
-            //{
-            //    _newEmployeeDepartment = value;
-            //    RaisePropertyChanged(() => NewEmployeeDepartment);
-            //}
+            get => _newEmployeeDepartment;
             set => SetProperty(ref _newEmployeeDepartment, value);
-
         }
 
-        public IMvxCommand SubmitEmployeeCommand => new MvxCommand(async () => await SubmitEmployee());
+        public IAsyncRelayCommand SubmitEmployeeCommand => new AsyncRelayCommand(SubmitEmployee);
 
         private async Task SubmitEmployee()
         {
@@ -115,15 +87,15 @@ namespace EmployeeDirectory.Core.ViewModels
                 editingEmployee.Position = NewEmployeePosition;
                 editingEmployee.Department = NewEmployeeDepartment;
 
-                var success = await employeeService.UpdateEmployee(editingEmployee);
+                var success = await employeeService.UpdateEmployeeAsync(editingEmployee);
                 if (success)
                 {
-                    //var index = employeeViewModel.Employees.IndexOf(editingEmployee);
-                    //if (index >= 0)
-                    //{
-                    //    employeeViewModel.Employees[index] = editingEmployee;
-                    //}
-                    await navigationService.Close(this);
+                    var index = employeeViewModel.Employees.IndexOf(editingEmployee);
+                    if (index >= 0)
+                    {
+                        employeeViewModel.Employees[index] = editingEmployee; 
+                    }
+                    await _navigationService.CloseAsync();
                 }
                 else
                 {
@@ -140,11 +112,11 @@ namespace EmployeeDirectory.Core.ViewModels
                     Department = NewEmployeeDepartment
                 };
 
-                var addedEmployeeId = await employeeService.AddEmployee(newEmployee);
+                var addedEmployeeId = await employeeService.AddEmployeeAsync(newEmployee);
 
                 if (addedEmployeeId > 0)
                 {
-                    await navigationService.Close(this);
+                    await _navigationService.CloseAsync();
                     employeeViewModel.Employees.Add(newEmployee);
                 }
                 else
@@ -154,10 +126,10 @@ namespace EmployeeDirectory.Core.ViewModels
             }
         }
 
-        public IMvxCommand CancelCommand => new MvxCommand(async () => await Cancel());
+        public IAsyncRelayCommand CancelCommand => new AsyncRelayCommand(async () => await Cancel());
         private async Task Cancel()
         {
-          await navigationService.Close(this); 
+            await _navigationService.CloseAsync();
         }
 
     }

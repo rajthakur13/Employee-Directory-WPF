@@ -1,17 +1,23 @@
-﻿using Microsoft.Extensions.Logging;
-using MvvmCross.Platforms.Wpf.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using EmployeeDirectory.Core.Services;
+using EmployeeDirectory.Core.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EmployeeDirectory.WPF
 {
-    public class Setup : MvxWpfSetup<Core.App>
+    public static class Setup
     {
-        protected override ILoggerFactory? CreateLogFactory() => default!;
+        public static void ConfigureServices()
+        {
+            var serviceCollection = new ServiceCollection();
 
-        protected override ILoggerProvider? CreateLogProvider() => default!;
+            serviceCollection.AddSingleton<IEmployeeService, EmployeeService>();
+            serviceCollection.AddSingleton<INavigationService, NavigationService>();
+
+            serviceCollection.AddTransient<EmployeeViewModel>();
+            serviceCollection.AddTransient<AddEmployeeViewModel>();
+
+            Ioc.Default.ConfigureServices(serviceCollection.BuildServiceProvider());
+        }
     }
 }

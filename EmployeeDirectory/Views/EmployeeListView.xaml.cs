@@ -1,5 +1,4 @@
 ﻿using EmployeeDirectory.Core.ViewModels;
-using MvvmCross.Platforms.Wpf.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace EmployeeDirectory.WPF.Views
     /// <summary>
     /// Interaction logic for EmployeeListView.xaml
     /// </summary>
-    public partial class EmployeeListView : MvxWpfView<EmployeeViewModel>
+    public partial class EmployeeListView : UserControl
     {
         public EmployeeListView()
         {
