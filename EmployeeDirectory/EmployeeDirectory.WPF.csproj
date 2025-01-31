@@ -9,12 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\EmployeeDirectory.Core\EmployeeDirectory.Core.csproj" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.230" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="4.0.230" />
   </ItemGroup>
 
 </Project>

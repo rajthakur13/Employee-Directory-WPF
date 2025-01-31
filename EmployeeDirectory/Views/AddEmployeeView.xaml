@@ -1,17 +1,13 @@
-﻿<Window
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:EmployeeDirectory.WPF.Views"
-    x:Class="EmployeeDirectory.WPF.Views.AddEmployeePopup"
-    mc:Ignorable="d"
-    d:DesignHeight="450"
-    d:DesignWidth="350"
-    Width="400"
-    Height="450"
-    DataContext="{Binding AddEmployeeViewModel, Source={StaticResource Locator}}">
-
+﻿<Window x:Class="EmployeeDirectory.WPF.Views.AddEmployeeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EmployeeDirectory.WPF.Views"
+        xmlns:cal="http://www.caliburnproject.org"
+        mc:Ignorable="d"
+        Title="Add Employee" Height="450" Width="400" WindowStartupLocation="CenterOwner">
+    
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="14"/>
@@ -59,30 +55,30 @@
             <TextBlock Text="Add New Employee" FontWeight="Bold" Margin="0,0,0,10" />
             <StackPanel Orientation="Vertical" Margin="0,5">
                 <TextBlock>
-                    <Run Text="Name" />
-                    <Run Text="*" Foreground="Red"/>
+                <Run Text="Name" />
+                <Run Text="*" Foreground="Red"/>
                 </TextBlock>
-                <TextBox x:Name="NameTextBox" Margin="0,5" Text="{Binding NewEmployeeName, Mode=TwoWay}" />
+                <TextBox x:Name="EmployeeName" Margin="0,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,5">
                 <TextBlock>
-                    <Run Text="Email" />
-                    <Run Text="*" Foreground="Red"/>
+                <Run Text="Email" />
+                <Run Text="*" Foreground="Red"/>
                 </TextBlock>
-                <TextBox x:Name="EmailTextBox" Margin="0,5" Text="{Binding NewEmployeeEmail, Mode=TwoWay}" />
+                <TextBox x:Name="EmployeeEmail" Margin="0,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,5">
                 <TextBlock Text="Position" />
-                <TextBox x:Name="PositionTextBox" Margin="0,5" Text="{Binding NewEmployeePosition, Mode=TwoWay}" />
+                <TextBox x:Name="EmployeePosition" Margin="0,5"  />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="0,5">
                 <TextBlock Text="Department" />
-                <TextBox x:Name="DepartmentTextBox" Margin="0,5" Text="{Binding NewEmployeeDepartment, Mode=TwoWay}" />
+                <TextBox x:Name="EmployeeDepartment" Margin="0,5" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
 
-                <Button Content="Submit" Style="{StaticResource SaveButtonStyle}" Command="{Binding SubmitEmployeeCommand}" Margin="5" Padding="5"/>
-                <Button Content="Cancel" Style="{StaticResource CancelButtonStyle}" Command="{Binding CancelCommand}" Margin="5" Padding="5"/>
+                <Button Content="Submit" Style="{StaticResource SaveButtonStyle}" x:Name="Submit" Margin="5" Padding="5"/>
+                <Button Content="Cancel" Style="{StaticResource CancelButtonStyle}" cal:Message.Attach="Cancel" x:Name="Cancel" Margin="5" Padding="5"/>
             </StackPanel>
         </StackPanel>
 

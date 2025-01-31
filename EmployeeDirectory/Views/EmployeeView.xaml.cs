@@ -1,5 +1,4 @@
-﻿using EmployeeDirectory.Core.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace EmployeeDirectory.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for AddEmployeePopup.xaml
+    /// Interaction logic for EmployeeView.xaml
     /// </summary>
-    public partial class AddEmployeePopup : Window
+    public partial class EmployeeView : UserControl
     {
-        public AddEmployeePopup()
+        public EmployeeView()
         {
             InitializeComponent();
         }

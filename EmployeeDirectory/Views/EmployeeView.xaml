@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="EmployeeDirectory.WPF.Views.EmployeeListView"
+﻿<UserControl x:Class="EmployeeDirectory.WPF.Views.EmployeeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:viewModels="clr-namespace:EmployeeDirectory.Core.ViewModels;assembly=EmployeeDirectory.Core"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=viewModels:EmployeeViewModel}">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EmployeeDirectory.WPF.Views"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style TargetType="Button" x:Key="AddButtonStyle">
             <Setter Property="Background" Value="#2E9DD5" />
@@ -52,7 +52,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -66,13 +65,13 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Employee Directory" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Grid.Column="0" Padding="12,0,0,0" />
-            <Button Content="Add Employee" Style="{StaticResource AddButtonStyle}" Command="{Binding OpenAddEmployeePopupCommand}" Margin="10" HorizontalAlignment="Right" Width="120" Grid.Column="1" />
+            <Button  Style="{StaticResource AddButtonStyle}" x:Name="AddEmployee" Margin="10" HorizontalAlignment="Right" Width="120" Grid.Column="1">Add Employee</Button>
         </Grid>
 
         <DataGrid x:Name="EmployeeDataGrid" GridLinesVisibility="None" Grid.Row="1" 
-                  ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee}" 
-                  AutoGenerateColumns="False" Margin="10" IsReadOnly="True" AlternationCount="2" 
-                  CanUserResizeRows="False" CanUserAddRows="False">
+              ItemsSource="{Binding Employees, NotifyOnSourceUpdated=True}" SelectedItem="{Binding SelectedEmployee}" 
+              AutoGenerateColumns="False" Margin="10" IsReadOnly="True" AlternationCount="2" 
+              CanUserResizeRows="False" CanUserAddRows="False">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridCell}">
                     <Setter Property="TextBlock.TextAlignment" Value="Center" />
@@ -88,17 +87,18 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*" />
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*" />
                 <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*" />
                 <DataGridTextColumn Header="Department" Binding="{Binding Department}" Width="*" />
 
-                <DataGridTemplateColumn Header="Action" Width="2*">
+                <DataGridTemplateColumn Header="Actions" Width="2*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Content="Edit" Style="{StaticResource EditButtonStyle}" Width="75" Command="{Binding EditEmployeeCommand}" />
-                                <Button Content="Delete" Style="{StaticResource DeleteButtonStyle}" Width="75" Command="{Binding DeleteEmployeeCommand}" />
+                                <Button Content="Edit" Style="{StaticResource EditButtonStyle}" Width="75" cal:Message.Attach="EditEmployee" />
+                                <Button Content="Delete" Style="{StaticResource DeleteButtonStyle}" Width="75" cal:Message.Attach="DeleteEmployee" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
