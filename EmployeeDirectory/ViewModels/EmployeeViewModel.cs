@@ -32,11 +32,12 @@ namespace EmployeeDirectory.WPF.ViewModels
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            Employees.Add(new Employee { Id = 1, Name = "Jim Carter", Position = "Software Engineer", Email = "jim.c@pravaltech.com", Department = "IT" });
-            Employees.Add(new Employee { Id = 2, Name = "Alex Murphy", Position = "Product Manager", Email = "alex.m@pravaltech.com", Department = "Buisness" });
-            Employees.Add(new Employee { Id = 3, Name = "Megan Bowen", Position = "Designer", Email = "megan.bown@pravaltech.com", Department = "Branding" });
-            Employees.Add(new Employee { Id = 4, Name = "Zack Nestor", Position = "Senior Software Engineer", Email = "zack.w@pravaltech.com", Department = "IT" });
-            Employees.Add(new Employee { Id = 5, Name = "Nester Wike", Position = "QA Specialist", Email = "nester.wi@pravaltech.com", Department = "Quality Assurance" });
+            RefreshEmployees();
+            //Employees.Add(new Employee { Id = 1, Name = "Jim Carter", Position = "Software Engineer", Email = "jim.c@pravaltech.com", Department = "IT" });
+            //Employees.Add(new Employee { Id = 2, Name = "Alex Murphy", Position = "Product Manager", Email = "alex.m@pravaltech.com", Department = "Buisness" });
+            //Employees.Add(new Employee { Id = 3, Name = "Megan Bowen", Position = "Designer", Email = "megan.bown@pravaltech.com", Department = "Branding" });
+            //Employees.Add(new Employee { Id = 4, Name = "Zack Nestor", Position = "Senior Software Engineer", Email = "zack.w@pravaltech.com", Department = "IT" });
+            //Employees.Add(new Employee { Id = 5, Name = "Nester Wike", Position = "QA Specialist", Email = "nester.wi@pravaltech.com", Department = "Quality Assurance" });
         }
         public EmployeeViewModel(IWindowManager windowManager, EmployeeService employeeService)
         {
