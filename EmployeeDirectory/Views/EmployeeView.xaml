@@ -111,35 +111,35 @@
             <Button Content="First" 
             Style="{StaticResource EditButtonStyle}" 
             Width="80" 
-            Command="{Binding GoToFirstPage}" 
+            cal:Message.Attach="GoToFirstPage" 
             IsEnabled="{Binding CanGoToFirstPage}" />
 
             <Button Content="Previous" 
             Style="{StaticResource EditButtonStyle}" 
             Width="80" 
-            Command="{Binding GoToPreviousPage}" 
+            cal:Message.Attach="GoToPreviousPage" 
             IsEnabled="{Binding CanGoToPreviousPage}" />
 
             <ComboBox Width="60" Height="28" HorizontalContentAlignment="Center"
               SelectedItem="{Binding ItemsPerPage, Mode=TwoWay}" 
-              Margin="10,0" 
+              Margin="10,0" ItemsSource="{Binding ItemsPerPageOptions}"
               ToolTip="Select items per page">
-                <ComboBoxItem Content="5"  />
+                <!--<ComboBoxItem Content="5"  />
                 <ComboBoxItem Content="10" />
                 <ComboBoxItem Content="20" />
-                <ComboBoxItem Content="50" />
+                <ComboBoxItem Content="50" />-->
             </ComboBox>
 
             <Button Content="Next" 
             Style="{StaticResource EditButtonStyle}" 
             Width="80" 
-            Command="{Binding GoToNextPage}" 
+            cal:Message.Attach="GoToNextPage"
             IsEnabled="{Binding CanGoToNextPage}" />
 
             <Button Content="Last" 
             Style="{StaticResource EditButtonStyle}" 
             Width="80" 
-            Command="{Binding GoToLastPage}" 
+            cal:Message.Attach="GoToLastPage" 
             IsEnabled="{Binding CanGoToLastPage}" />
         </StackPanel>
     </Grid>
